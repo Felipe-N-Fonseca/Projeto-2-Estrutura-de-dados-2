@@ -1,7 +1,4 @@
 package SRC;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.lang.Math;
 
 class BinaryTree{
     private Node root; // Ponteiro do nó inicial.
@@ -19,66 +16,174 @@ class BinaryTree{
     
     public int getDegree(Node node){ // Encontra o grau da arvore.
         if(node.isLeaf())return 0;
-        if(node.getleft() == null) return calc.max(node.getDegree(), getDegree(node.getRight()));
-        if(node.getRight() == null)return calc.max(node.getDegree(), getDegree(node.getleft()));
-        return calc.max(node.getDegree(), calc.max(getDegree(node.getleft()), getDegree(node.getRight())));
+        if(node.getLeft() == null) return calc.max(node.getDegree(), getDegree(node.getRight()));
+        if(node.getRight() == null)return calc.max(node.getDegree(), getDegree(node.getLeft()));
+        return calc.max(node.getDegree(), calc.max(getDegree(node.getLeft()), getDegree(node.getRight())));
     }
 
     public int getHeight(){return root.getHeight();} // Encontra a altura da árvore a partir do root.
 
     public void inOrderTraversal(Node node){ // Imprime os valores dos nós usando o metodo em ordem.
-        if(node.getleft() != null) preOrderTraversal(node.getleft());
-        System.out.println(node.getData());
-        if(node.getRight() != null) preOrderTraversal(node.getRight());
+        if(node.getLeft() != null) inOrderTraversal(node.getLeft());
+        System.out.println(node.getDe());
+        if(node.getRight() != null) inOrderTraversal(node.getRight());
+    }
+    
+    private int diffCompare(String s1, String s2) {
+        return s1.compareToIgnoreCase(s2);
     }
 
-    public void preOrderTraversal(Node node){ // Imprime os valores dos nós usando o metodo pre ordem.
-        System.out.println(node.getData());
-        if(node.getleft() != null) preOrderTraversal(node.getleft());
-        if(node.getRight() != null) preOrderTraversal(node.getRight());
+    public void remove(String data) {
+        root = remove(root, data);
     }
 
-    public void postOrderTraversal(Node node){ // Imprime os valores dos nós usando o metodo pos ordem.
-        if(node.getleft() != null) preOrderTraversal(node.getleft());
-        if(node.getRight() != null) preOrderTraversal(node.getRight());
-        System.out.println(node.getData());
-
-    }
-
-    public void levelOrderTraversal(){ // Imprime os valores dos nós usando o metodo de niveis.
-        Queue<Node> Fila = new LinkedList<>();
-        Fila.add(getRoot());
-
-        double Altura = Math.pow(2, getHeight()) - 1; // Calculo do tamanho máximo da lista baseada no número de nós.
-
-        for(int i = 0; i < Altura; i++){ // Percorre a fila enquanto tiver elementos
-            if(Fila.isEmpty())break;
-            Node NoAtual = Fila.poll();
-            System.out.println(NoAtual.getData());
-            if(NoAtual.hasLeft()) Fila.add(NoAtual.getleft());
-            if(NoAtual.hasRight()) Fila.add(NoAtual.getRight());
+    private Node remove(Node node, String data) {
+        if (node == null) {
+            throw new RuntimeException("Nó com chave " + data + " não existe na BST!");
         }
+
+        // Comparar ignorando a diferença entre maiúsculas e minúsculas
+        int diff = diffCompare(data, node.getNomeEsc());
+                
+        if (diff < 0) {
+            node.setLeft(remove(node.getLeft(), data));
+        } else if (diff > 0) {
+            node.setRight(remove(node.getRight(), data));
+        } else {
+            node = removeNode(node);
+        }
+        
+        return node;
     }
 
-    public boolean removeNode(Node no){ // remove um nó da arvore
-        if(no.isRoot()) return true;
-        if(no.getDegree() == 2){ // caso tenha os dois filhos
-            
-        }else if(no.getDegree() == 1){ // caso tenha um filho
-            if(no.hasLeft()){
-                if(no.getParent().getleft() == no)no.getParent().setLeft(no.getleft());
-                else no.getParent().setRight(no.getleft());
+    private Node removeNode(Node node) {
+        // Se o nó for uma folha, basta removê-lo
+        if (node.isLeaf()) {
+            return null;
+        }
+        
+        // Se não tiver filho à esquerda, substitui pelo filho à direita
+        if (!node.hasLeft()) {
+            return node.getRight();
+        } 
+        
+        // Se não tiver filho à direita, substitui pelo filho à esquerda
+        else if (!node.hasRight()) {
+            return node.getLeft();
+        } else {
+            // Se tiver ambos os filhos, encontra o predecessor
+            Node predecessor = predecessor(node.getNomeEsc());
+            node.setNomeEsc(predecessor.getNomeEsc());
+            node.setLeft(remove(node.getLeft(), predecessor.getNomeEsc()));
+        }
+        
+        return node;        
+    }
+
+    public Boolean insertNode(String de, String mun, int codEsc, String nomeEsc, String dsPais, byte numAlunos){
+        if(isEmpty()){
+            setRoot(new Node(de, null, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
+            return true;
+        }
+        if(insertNode(de, mun, codEsc, nomeEsc, dsPais, numAlunos, root)) return true;
+        return false;
+    }
+
+    public Boolean insertNode(String de, String mun, int codEsc, String nomeEsc, String dsPais, byte numAlunos, Node no){
+        int diff = diffCompare(nomeEsc, no.getNomeEsc());
+        if(diff == 0){
+            no.adicionaEstrangeiro(dsPais, numAlunos);
+            return true;
+        }
+        if(no.isLeaf()){
+            if (diff < 0) {
+                no.setLeft(new Node(de, null, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
                 return true;
-            }else if(no.hasRight()){
-                if(no.getParent().getleft() == no)no.getParent().setLeft(no.getRight());
-                else no.getParent().setRight(no.getRight());
+            } else if (diff > 0) {
+                no.setRight(new Node(de, null, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
                 return true;
             }
-        }else{ // caso não tenha filho
-            if(no.getParent().getleft() == no)no.getParent().setLeft(null);
-            else no.getParent().setRight(null);
-            return true;
+        }
+        if(!no.isLeaf()){
+            if (diff < 0) {
+                return insertNode(de, mun, codEsc, nomeEsc, dsPais, numAlunos, no.getLeft());
+            } else if (diff > 0) {
+                return insertNode(de, mun, codEsc, nomeEsc, dsPais, numAlunos, no.getRight());
+            }
         }
         return false;
     }
+
+    public Node findMax() {
+		return findMax(root);
+	}
+	
+	private Node findMax(Node node) {
+		if (node == null) {
+			return null;
+		}
+
+		while (node.hasRight()) {
+			node = node.getRight();
+		}
+		return node;
+	}
+	
+    
+    public Node findPredecessor(String data) {
+        return predecessor(data);
+    }
+
+    private Node predecessor(String data) {
+        // Faz a busca do nó baseado no nome ignorando o caso
+        Node node = search(data);
+        return predecessor(node);
+    }
+
+    private Node predecessor(Node node) {
+        if (node == null) {
+            return null;
+        }
+
+        // Se o nó tem um filho à esquerda, o predecessor é o maior valor da subárvore à esquerda
+        if (node.hasLeft()) {
+            return findMax(node.getLeft());
+        } else {
+            Node current = node;
+            Node parent = node.getParent();
+
+            // Caso o nó não tenha filho à esquerda, subimos pela árvore até encontrar um nó
+            // que seja filho direito de seu pai (o que significa que o pai é o predecessor)
+            while (parent != null && current == parent.getLeft()) {
+                current = parent;
+                parent = current.getParent();
+            }
+
+            return parent;
+        }
+    }
+
+    // Método de busca que também ignora o caso das letras
+    private Node search(String data) {
+        return search(root, data);
+    }
+
+    private Node search(Node node, String data) {
+        if (node == null) {
+            return null;
+        }
+
+        // Compara a chave ignorando a diferença de maiúsculas e minúsculas
+        int diff = diffCompare(data, node.getNomeEsc());
+
+        if (diff < 0) {
+            return search(node.getRight(), data);
+        } else if (diff > 0) {
+            return search(node.getLeft(), data);
+        } else {
+            return node; // Encontrou o nó
+        }
+    }
+
+    
 }

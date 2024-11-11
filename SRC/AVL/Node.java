@@ -1,9 +1,9 @@
-package SRC;
+package AVL;
 import java.util.HashMap;
 import java.util.Map;
 
-class Node{
-    private int codEsc;
+public class Node{
+    private int codEsc, FB;
     private String de, mun, nomeEsc;
     private Node parent, left, right;
     private Map<String, Byte> Estrangeiro;
@@ -25,6 +25,7 @@ class Node{
         if(dsPais != null){
             adicionaEstrangeiro(dsPais, numAlunos);
         }
+        setFB(0);
 
     }
 
@@ -37,6 +38,7 @@ class Node{
     public void setMun(String mun){this.mun = mun;}
     public void setNomeEsc(String nomeEsc){this.nomeEsc = nomeEsc;}
     public void setEstrangeiro(Map<String, Byte> estrangeiro){this.Estrangeiro = estrangeiro;}
+    public void setFB(int FB){this.FB = FB;}
 
     public String getDe(){return this.de;}
     public Node getParent(){return this.parent;}
@@ -46,6 +48,7 @@ class Node{
     public String getMun(){return mun;}
     public String getNomeEsc(){return nomeEsc;}
     public Map<String, Byte> getEstrangeiro(){return Estrangeiro;}
+    public int getFB(){return FB;}
 
 
     // Métodos
@@ -76,5 +79,11 @@ class Node{
         if(Estrangeiro.put(dsPais, numAlunos) == null) return true;
         return false;
     }
+
+    public void updateFB(){
+		int leftHeight = hasLeft() ? left.getHeight() : -1;
+		int rightHeight = hasRight() ? right.getHeight() : -1;
+		setFB(rightHeight - leftHeight);
+	}
 }
 

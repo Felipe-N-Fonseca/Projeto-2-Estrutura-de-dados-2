@@ -1,11 +1,26 @@
+/*
+ *   Grupo de desenvolvedores do projeto:
+ * 
+ * - Erick Nakabayashi Dedvitis - 10403532
+ * - Felipe do Nascimento Fonseca - 10409389
+ * - Matheus Hidalgo do Nascimento Fest Ferreira - 10390172
+ * 
+ */
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class BinaryTree{
     private Node root; // Ponteiro do nó inicial.
+    private Map<String, Integer> totalPorPais = new HashMap<>();
 
     // Construtores, setters e getters.
     public BinaryTree(){setRoot(null);}
     public BinaryTree(Node node){setRoot(node);}
     public void setRoot(Node node){this.root = node;}
+    public void setTotalPorPais(Map<String, Integer> totalPorPais){this.totalPorPais = totalPorPais;}
     public Node getRoot(){return this.root;}
+    public Map<String, Integer> getTotalPorPais(){return this.totalPorPais;}
 
     
     // Métodos:
@@ -20,12 +35,6 @@ public class BinaryTree{
     }
 
     public int getHeight(){return root.getHeight();} // Encontra a altura da árvore a partir do root.
-
-    public void ordemAlfabetica(Node node){ // Imprime os valores dos nós usando o metodo em ordem.
-        if(node.getLeft() != null) ordemAlfabetica(node.getLeft());
-        System.out.println(" - " + node.getNomeEsc());
-        if(node.getRight() != null) ordemAlfabetica(node.getRight());
-    }
     
     private int diffCompare(String s1, String s2){
         return s1.compareToIgnoreCase(s2);
@@ -74,6 +83,7 @@ public class BinaryTree{
     
 
     public Node insertNode(String de, String mun, int codEsc, String nomeEsc, String dsPais, byte numAlunos){
+        updateTotalPorPais(dsPais, numAlunos);
         if(isEmpty()){
             setRoot(new Node(de, null, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
             return getRoot();
@@ -172,19 +182,45 @@ public class BinaryTree{
         // Compara a chave ignorando a diferença de maiúsculas e minúsculas
         int diff = diffCompare(data, node.getNomeEsc());
 
-        if (diff < 0) {
+        if (diff > 0) {
             return search(node.getRight(), data);
-        } else if (diff > 0) {
+        } else if (diff < 0) {
             return search(node.getLeft(), data);
         } else {
             return node; // Encontrou o nó
         }
     }
 
+    public void updateTotalPorPais(String a, byte b){
+        if (getTotalPorPais().containsKey(a))this.totalPorPais.put(a, this.totalPorPais.get(a) + b);
+        else this.totalPorPais.put(a, 0 + b);
+    }
+    
+    public void ordemAlfabetica(Node node){ // Imprime os valores dos nós usando o metodo em ordem.
+        if(node.getLeft() != null) ordemAlfabetica(node.getLeft());
+        System.out.println(" - " + node.getNomeEsc());
+        if(node.getRight() != null) ordemAlfabetica(node.getRight());
+    }
+
     public void qtdDeAlunosEmUmaEscola(String escola){ // implementar
         if(escola == "exit")return;
         Node x = search(escola);
-
+        if(x == null){System.out.println("\n\nNome inválido, tente novamente.");return;}
+        System.out.println("Número de alunos estrangeiros na escola " + escola + ": " + x.getSomaEstrangeiros());
     }
+
+    
+    public void qtdDeAlunosEmCadaEscola(Node node){ // Imprime os valores dos nós usando o metodo em ordem.
+        if(node.getLeft() != null) qtdDeAlunosEmCadaEscola(node.getLeft());
+        qtdDeAlunosEmUmaEscola(node.getNomeEsc());
+        if(node.getRight() != null) qtdDeAlunosEmCadaEscola(node.getRight());
+    }
+
+    public void getQtdDeAlunosPorPais(){
+        for (String a : this.totalPorPais.keySet()){
+            System.out.println(" - " + a + ": " + this.totalPorPais.get(a));
+        }
+    }
+
 
 }

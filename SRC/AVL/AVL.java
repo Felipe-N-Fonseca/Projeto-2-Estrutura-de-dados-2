@@ -1,3 +1,12 @@
+/*
+ *   Grupo de desenvolvedores do projeto:
+ * 
+ * - Erick Nakabayashi Dedvitis - 10403532
+ * - Felipe do Nascimento Fonseca - 10409389
+ * - Matheus Hidalgo do Nascimento Fest Ferreira - 10390172
+ * 
+ */
+
 public class AVL extends BinaryTree{
     // Construtores
     public AVL(){super();}

@@ -1,3 +1,12 @@
+/*
+ *   Grupo de desenvolvedores do projeto:
+ * 
+ * - Erick Nakabayashi Dedvitis - 10403532
+ * - Felipe do Nascimento Fonseca - 10409389
+ * - Matheus Hidalgo do Nascimento Fest Ferreira - 10390172
+ * 
+ */
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,5 +93,13 @@ public class Node{
 		int rightHeight = hasRight() ? right.getHeight() : -1;
 		setFB(rightHeight - leftHeight);
 	}
+
+    public int getSomaEstrangeiros(){
+        int s = 0;
+        for(byte valor : getEstrangeiro().values()){
+            s += valor;
+        }
+        return s;
+    }
 }
 

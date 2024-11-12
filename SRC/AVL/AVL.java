@@ -1,5 +1,3 @@
-package AVL;
-
 public class AVL extends BinaryTree{
     // Construtores
     public AVL(){super();}

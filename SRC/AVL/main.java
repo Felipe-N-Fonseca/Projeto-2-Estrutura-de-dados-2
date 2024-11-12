@@ -1,4 +1,3 @@
-package AVL;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,14 +5,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class main{
-    public static void main(String[] args){
-
+public class Main { 
+    public static void main(String[] args) {
         AVL Arvore = new AVL();
 
         // Path filePath = Paths.get("../../DATA/Quantidade de alunos estrangeiros por nacionalidade_2° Semestre 2023.csv").toAbsolutePath().toString();
-        String arquivoCSV = Paths.get("../../DATA/Quantidade de alunos estrangeiros por nacionalidade_2° Semestre 2023.csv").toAbsolutePath().toString();
-        // String arquivoCSV = "../../DATA/Quantidade de alunos estrangeiros por nacionalidade_2° Semestre 2023.csv";
+        // String arquivoCSV = Paths.get("../../DATA/Quantidade de alunos estrangeiros por nacionalidade_2° Semestre 2023.csv").toAbsolutePath().toString();
+        String arquivoCSV = "../../DATA/Quantidade de alunos estrangeiros por nacionalidade_2° Semestre 2023.csv";
         String separador = ";";
 
         try (BufferedReader br = new BufferedReader(new FileReader(arquivoCSV))) {
@@ -40,7 +38,7 @@ public class main{
         int opcao;
 
         do {
-            //clearScreen();
+            clearScreen();
             System.out.println("\nEscolha uma operação:");
             System.out.println("1. Mostrar escolas em ordem alfabética");
             System.out.println("2. Quantidade de alunos por país em uma escola");
@@ -51,7 +49,7 @@ public class main{
             System.out.println("7. Sair");
             System.out.print("Digite sua opção: ");
             opcao = scanner.nextInt();
-            //clearScreen();
+            clearScreen();
 
             switch(opcao){
                 case 1:

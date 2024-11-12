@@ -1,5 +1,3 @@
-package AVL;
-
 public class BinaryTree{
     private Node root; // Ponteiro do nó inicial.
 

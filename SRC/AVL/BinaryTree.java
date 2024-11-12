@@ -89,20 +89,22 @@ public class BinaryTree{
         }
         if(no.isLeaf()){
             if (diff < 0) {
-                no.setLeft(new Node(de, null, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
-                no.getLeft().setParent(no);
+                no.setLeft(new Node(de, no, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
                 return no;
             } else if (diff > 0) {
-                no.setRight(new Node(de, null, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
-                no.getRight().setParent(no);
+                no.setRight(new Node(de, no, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
                 return no;
             }
         }
         if(!no.isLeaf()){
             if (diff < 0) {
-                return insertNode(de, mun, codEsc, nomeEsc, dsPais, numAlunos, no.getLeft());
+                if(no.hasLeft())return insertNode(de, mun, codEsc, nomeEsc, dsPais, numAlunos, no.getLeft());
+                no.setLeft(new Node(de, no, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
+                return no;
             } else if (diff > 0) {
-                return insertNode(de, mun, codEsc, nomeEsc, dsPais, numAlunos, no.getRight());
+                if(no.hasRight())return insertNode(de, mun, codEsc, nomeEsc, dsPais, numAlunos, no.getRight());
+                no.setRight(new Node(de, no, null, null, mun, codEsc, nomeEsc, dsPais, numAlunos));
+                return no;
             }
         }
         return null;

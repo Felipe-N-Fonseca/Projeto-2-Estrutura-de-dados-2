@@ -56,9 +56,9 @@ public class Main {
             System.out.println("2. Mostrar quantidade de alunos por país em uma escola");
             System.out.println("3. Mostrar número de alunos estrangeiros em cada escola");
             System.out.println("4. Mostrar quantidade de alunos por país no Brasil");
-            System.out.println("5. ");
-            System.out.println("6. ");
-            System.out.println("7. ");
+            System.out.println("5. Mostrar distribuição de nacionalidade nas escolas");
+            System.out.println("6. Mostrar escolas com mais alunos de um país");
+            System.out.println("7. Remover um nó"); // falta codar
             System.out.println("8. Exibir Desempenho");
             System.out.println("9. Sair");
             System.out.print("Digite sua opção: ");
@@ -94,18 +94,37 @@ public class Main {
                     continue;
 
                 case 5:
-                
+                    System.out.println("\nDistribuição de nacionalidades por distrito:");
+                    Arvore.distribuiPorDistrito();  // Chama o método para mostrar a distribuição
+                    waitEnter2();
                     continue;
 
                 case 6:
-                
+                    System.out.print("Digite o nome do país para exibir as escolas com mais alunos dessa nacionalidade: ");
+                    scanner.nextLine(); 
+                    String pais = scanner.nextLine();
+                    Arvore.getEscolasMaiorConcentracaoPorPais(pais);
+                    waitEnter1();
                     continue;
                     
                 case 7:
-                
+                    System.out.println("\nDigite o nome da escola que deseja remover: ");                
+                    scanner.nextLine(); 
+                    String rmEscola = scanner.nextLine();
+                    Node x = Arvore.search(rmEscola);
+                    if(x == null){System.out.println("\n\nNome inválido, tente novamente.");}
+                    else{
+                        Arvore.remove(rmEscola);
+                        System.out.println("\n\n" + rmEscola + " removido com sucesso");
+                    } 
                     continue;
-                case 8:
                 
+                case 8:
+                    System.out.println("\nQuantidade de comparações realizadas pela arvore nas operações:");                
+                    System.out.println("- Insert: " + Arvore.getDesInsert());                
+                    System.out.println("- Remove: " + Arvore.getDesRemove());                
+                    System.out.println("- Search: " + Arvore.getDesSearch());
+                    waitEnter2();                
                     continue;
                 case 9:
                     System.out.println("+------------------------------------------------------+");
